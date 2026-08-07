@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moon Injector – Stealth & Free</title>
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --surface: #141414;
+      --text: #ccc;
+      --accent: #a855f7;
+      --accent-glow: #c084fc;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      line-height: 1.6;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--accent-glow); }
+
+    .container { max-width: 960px; margin: 0 auto; padding: 0 20px; }
+
+    nav {
+      display: flex;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid #222;
+      margin-bottom: 32px;
+    }
+    nav a { color: #aaa; font-weight: 500; }
+    nav a:hover { color: white; }
+
+    .section { display: none; }
+    .section.active { display: block; }
+
+    h1 { font-size: 2.5rem; margin-bottom: 8px; }
+    h2 { font-size: 1.8rem; margin-bottom: 16px; }
+    p { margin-bottom: 16px; }
+
+    .btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: box-shadow 0.2s;
+    }
+    .btn:hover {
+      box-shadow: 0 0 16px var(--accent-glow);
+      color: white;
+    }
+
+    .card {
+      background: var(--surface);
+      padding: 24px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #222;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 700px) {
+      .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 6px;
+    }
+
+    code {
+      background: #1e1e1e;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <nav>
+      <a href="#" data-page="home">Home</a>
+      <a href="#" data-page="download">Download</a>
+      <a href="#" data-page="status">Status</a>
+      <a href="#" data-page="docs">Docs</a>
+    </nav>
+
+    <!-- HOME -->
+    <div id="home" class="section active">
+      <h1>Moon Injector</h1>
+      <p style="font-size:1.2rem;">Stealth, Power, Free.</p>
+      <a href="#" class="btn" data-page="download">Download Now</a>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>🔇 Scanner Suspension</h3>
+          <p>Freezes Hyperion's scanning threads before injection.</p>
+        </div>
+        <div class="card">
+          <h3>🗺️ Manual Map</h3>
+          <p>Injects without LoadLibrary – no module list entry.</p>
+        </div>
+        <div class="card">
+          <h3>🧠 Lua Pipe Executor</h3>
+          <p>Execute scripts via named pipe (`MoonPipe_&lt;PID&gt;`).</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOWNLOAD -->
+    <div id="download" class="section">
+      <h2>Download Moon Injector</h2>
+      <div class="card">
+        <p><strong>Latest version:</strong> v1.0.0</p>
+        <p>SHA-256: <code>5d4e6f...</code> (place real hash)</p>
+        <a href="https://github.com/YOUR_USER/moon-injector/releases/latest" class="btn">Download from GitHub Releases</a>
+      </div>
+      <p>Requires Windows 10/11 (x64). Run as Administrator.</p>
+    </div>
+
+    <!-- STATUS -->
+    <div id="status" class="section">
+      <h2>Offset Status</h2>
+      <div class="card">
+        <p>
+          <span id="statusDot" class="status-dot" style="background:gray;"></span>
+          <span id="statusText">Checking...</span>
+        </p>
+        <p>Last updated: <span id="lastUpdate">-</span></p>
+      </div>
+    </div>
+
+    <!-- DOCS -->
+    <div id="docs" class="section">
+      <h2>Documentation</h2>
+      <div class="card">
+        <h3>Quick Start</h3>
+        <ol>
+          <li>Download and open <strong>Moon Injector</strong>.</li>
+          <li>Wait for it to detect Roblox (or specify PID).</li>
+          <li>Click Inject – the internal pipe server starts.</li>
+          <li>Send Lua scripts to <code>\\.\pipe\MoonPipe_&lt;PID&gt;</code>.</li>
+        </ol>
+      </div>
+      <div class="card">
+        <h3>Pipe Protocol</h3>
+        <p>1. Connect to the named pipe.<br>
+        2. Write your Lua script as a single line (or with <code>\n</code>).<br>
+        3. Read back "OK" on success or an error message.</p>
+        <p>Example (PowerShell):<br>
+        <code>$p="12345"; $pipe=New-Object System.IO.Pipes.NamedPipeClientStream(".","MoonPipe_$p",[System.IO.Pipes.PipeDirection]::InOut); $pipe.Connect(3000); $w=New-Object System.IO.StreamWriter($pipe); $w.WriteLine("print('hello')"); $pipe.Close()</code></p>
+      </div>
+    </div>
+
+    <footer style="margin-top:60px; padding:20px 0; border-top:1px solid #222; text-align:center; font-size:0.85rem; color:#555;">
+      Moon Injector – Educational tool. Not affiliated with Roblox.
+    </footer>
+  </div>
+
+  <script>
+    // Page navigation
+    document.querySelectorAll('nav a[data-page], .btn[data-page]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const page = link.dataset.page;
+        document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+        document.getElementById(page).classList.add('active');
+      });
+    });
+
+    // Offset status (fetch from your raw offsets.json on GitHub)
+    fetch('https://raw.githubusercontent.com/YOUR_USER/moon-offsets/main/offsets.json')
+      .then(res => {
+        if (!res.ok) throw new Error('fetch failed');
+        return res.json();
+      })
+      .then(data => {
+        document.getElementById('statusDot').style.background = 'lime';
+        document.getElementById('statusText').textContent = 'Offsets up-to-date';
+        document.getElementById('lastUpdate').textContent = new Date().toLocaleString();
+      })
+      .catch(() => {
+        document.getElementById('statusDot').style.background = 'red';
+        document.getElementById('statusText').textContent = 'Offsets unavailable';
+      });
+  </script>
+</body>
+</html>
